@@ -1,0 +1,424 @@
+{
+  "name": "Classificação Inteligente de E-mails com OpenAI",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "id": "a2076176-5a89-415f-9876-d0668057a114",
+      "name": "Gmail Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        40,
+        200
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NXoegFc3UvEU3rTJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {}
+      },
+      "id": "756f5d3e-3698-4576-8c0d-bb8dcd84a48e",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        320,
+        560
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "uYGMmOuIeweJjbjO",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_7578003912064334733"
+        ]
+      },
+      "id": "8ed2fc85-985a-45e2-93b9-9743d1bee75f",
+      "name": "Trabalho",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1200,
+        -200
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NXoegFc3UvEU3rTJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_5526364918492108354"
+        ]
+      },
+      "id": "1658ff91-ef3f-4a8e-8dac-06f57b60d73e",
+      "name": "Financeiro",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        -240
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NXoegFc3UvEU3rTJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_7390719124613777476"
+        ]
+      },
+      "id": "a57872d5-b1ed-4ff4-9c1d-f1ba38b74f75",
+      "name": "Tecnologia",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1360,
+        -40
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NXoegFc3UvEU3rTJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_2605385049733923145"
+        ]
+      },
+      "id": "bb44d2d6-c257-4791-b45a-8a11550bc6b8",
+      "name": "Educação",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1420,
+        220
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NXoegFc3UvEU3rTJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_9099943956884098849"
+        ]
+      },
+      "id": "ea717391-f35e-4b5e-81ec-f6abcdb0b6d2",
+      "name": "Segurança",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1400,
+        440
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NXoegFc3UvEU3rTJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_808303985995564057"
+        ]
+      },
+      "id": "609eb19a-c563-47de-b67f-b7cfd1dcddac",
+      "name": "Compras",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1380,
+        680
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NXoegFc3UvEU3rTJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_3788106192133999430"
+        ]
+      },
+      "id": "d62b1ed7-b081-4179-bb19-a397a1d1cb65",
+      "name": "Certificações",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1180,
+        880
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NXoegFc3UvEU3rTJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_3863486237782445111"
+        ]
+      },
+      "id": "013ca57d-3711-47fe-bd2a-d4e0527ec0f3",
+      "name": "Faturas e Cobranças",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        860,
+        940
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NXoegFc3UvEU3rTJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# **Classificação Inteligente de E-mails com OpenAI**\n\n\n## **Descrição:**\nEste workflow automatiza o processo de classificação de e-mails recebidos na conta Gmail, atribuindo rótulos específicos com base no conteúdo de cada mensagem. Utiliza um gatilho do Gmail para monitorar novos e-mails e integra a API do OpenAI para processar e classificar os textos em categorias como:\n\n- **Financeiro**\n- **Trabalho**\n- **Tecnologia**\n- **Educação**\n- **Segurança**\n- **Compras**\n- **Certificações**\n- **Faturas e Cobranças**\n\nApós a classificação, os rótulos apropriados são aplicados automaticamente nos e-mails, permitindo uma organização mais eficiente e a priorização de mensagens importantes. O workflow ajuda a economizar tempo ao gerenciar a caixa de entrada de maneira automatizada.\n\n\n\n",
+        "height": 603.9655403392034,
+        "width": 465.59430218515877,
+        "color": 6
+      },
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        -40
+      ],
+      "id": "ac43a011-c813-486e-bdac-b42422c157bf"
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Financeiro",
+              "description": "E-mails relacionados a transações financeiras, como cartões de crédito, investimentos, pagamentos, extratos e atualizações de contas bancárias. Esses e-mails também podem conter notificações de transferências, depósitos, retiradas e alertas de movimentações financeiras.\nPalavras-chave: Nubank, Santander, Pagamento, Extrato, Controle Financeiro, Fatura, Investimento, Transferência, Depósito, Retirada, Alerta Financeiro, Movimentação Bancária."
+            },
+            {
+              "category": "Trabalho",
+              "description": "E-mails relacionados a atividades profissionais, oportunidades de emprego, relatórios, cronogramas internos, planejamentos, consultorias, reuniões, novos colaboradores e mudanças na equipe.Palavras-chave: UFAL, Relatório, Cronograma, Consultoria, Reunião, Novo Colaborador, Planejamento, Prestek Telecom."
+            },
+            {
+              "category": "Tecnologia",
+              "description": "E-mails sobre atualizações e serviços de tecnologia, como novas ferramentas, mudanças em plataformas tecnológicas, ou avisos de manutenção de sistemas. Palavras-chave: OpenAI, Damon, Hetzner Cloud, IA, Atualização, Serviço, Manutenção, Plataforma, Tecnologia."
+            },
+            {
+              "category": "Educação",
+              "description": "E-mails relacionados a cursos, workshops, treinamentos e qualquer tipo de formação ou educação continuada. Palavras-chave: Microsoft na DIO, Curso, Workshop, Treinamento, Educação, Formação, Estudo."
+            },
+            {
+              "category": "Segurança",
+              "description": "E-mails relacionados a segurança digital, incluindo atualizações de senhas, avisos de segurança e informações sobre proteção de dados. Palavras-chave: LastPass, AVG, Senha, Segurança, Proteção de Dados, Atualização de Segurança."
+            },
+            {
+              "category": "Compras",
+              "description": "E-mails de compras online, promoções e ofertas especiais de produtos ou serviços. Palavras-chave: AliExpress, Promoção, Oferta, Produto, Serviço, Desconto, Compra Online."
+            },
+            {
+              "category": "Certificações",
+              "description": "E-mails relacionados à obtenção ou renovação de certificações digitais, chaves de segurança ou documentos relacionados. Palavras-chave: Certificado Digital, API Pix, Renovação, Certificação, Segurança, Documento."
+            },
+            {
+              "category": "Faturas e Cobranças",
+              "description": "E-mails que contêm faturas, cobranças pendentes ou avisos sobre pagamentos atrasados. Palavras-chave: Fatura, Cobrança, Pagamento Pendente, PRESTEK TELECOM, Régua de Cobrança, Aviso de Pagamento."
+            }
+          ]
+        },
+        "options": {
+          "systemPromptTemplate": "Por favor, classifique o texto fornecido pelo usuário em uma das seguintes categorias: {categories}, e use as instruções de formatação fornecidas abaixo. Não explique, e apenas produza o JSON."
+        }
+      },
+      "id": "a133b3bc-0ea3-4abf-a874-b24f062bdf62",
+      "name": "Classificador de Texto",
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        380,
+        220
+      ],
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Classificador de Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Classificador de Texto",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificador de Texto": {
+      "main": [
+        [
+          {
+            "node": "Financeiro",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Trabalho",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tecnologia",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Educação",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Segurança",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Compras",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Certificações",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Faturas e Cobranças",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": false,
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "02b0fa12-d392-4850-81b2-b56fdfef2733",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "iJVDSv0233MzJ7Hi",
+  "tags": [
+    {
+      "createdAt": "2024-10-08T19:13:13.432Z",
+      "updatedAt": "2024-10-08T19:13:13.432Z",
+      "id": "T53SOrC7dGdKI1Yb",
+      "name": "Classificação de E-mails"
+    },
+    {
+      "createdAt": "2024-10-08T19:13:23.041Z",
+      "updatedAt": "2024-10-08T19:13:23.041Z",
+      "id": "rFaOhZMo0Xu8Yo5y",
+      "name": "Automação Gmail"
+    },
+    {
+      "createdAt": "2024-10-08T19:13:31.266Z",
+      "updatedAt": "2024-10-08T19:13:31.266Z",
+      "id": "Lp8GFAGTjJCQsNr3",
+      "name": "OpenAI"
+    }
+  ]
+}
