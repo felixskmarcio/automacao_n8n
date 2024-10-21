@@ -1,4 +1,4 @@
-# Planejamento de Projeto - Classificação Inteligente de E-mails com OpenAI
+# Planejamento do Projeto - Classificação Inteligente de E-mails com OpenAI
 
 felixBR  
 Rua E, 20  
