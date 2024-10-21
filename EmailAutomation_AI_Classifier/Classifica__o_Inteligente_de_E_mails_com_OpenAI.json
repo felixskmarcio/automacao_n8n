@@ -19,8 +19,8 @@
       "type": "n8n-nodes-base.gmailTrigger",
       "typeVersion": 1.1,
       "position": [
-        40,
-        200
+        120,
+        260
       ],
       "credentials": {
         "gmailOAuth2": {
@@ -39,8 +39,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1,
       "position": [
-        320,
-        560
+        180,
+        620
       ],
       "credentials": {
         "openAiApi": {
@@ -62,8 +62,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1200,
-        -200
+        1180,
+        -180
       ],
       "credentials": {
         "gmailOAuth2": {
@@ -75,7 +75,7 @@
     {
       "parameters": {
         "operation": "addLabels",
-        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}\n",
         "labelIds": [
           "Label_5526364918492108354"
         ]
@@ -85,8 +85,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        900,
-        -240
+        880,
+        -220
       ],
       "credentials": {
         "gmailOAuth2": {
@@ -108,8 +108,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1360,
-        -40
+        1340,
+        -20
       ],
       "credentials": {
         "gmailOAuth2": {
@@ -131,8 +131,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1420,
-        220
+        1400,
+        240
       ],
       "credentials": {
         "gmailOAuth2": {
@@ -154,8 +154,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1400,
-        440
+        1380,
+        460
       ],
       "credentials": {
         "gmailOAuth2": {
@@ -177,8 +177,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1380,
-        680
+        1360,
+        700
       ],
       "credentials": {
         "gmailOAuth2": {
@@ -200,8 +200,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1180,
-        880
+        1160,
+        900
       ],
       "credentials": {
         "gmailOAuth2": {
@@ -223,8 +223,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        860,
-        940
+        840,
+        960
       ],
       "credentials": {
         "gmailOAuth2": {
@@ -235,19 +235,38 @@
     },
     {
       "parameters": {
-        "content": "# **Classificação Inteligente de E-mails com OpenAI**\n\n\n## **Descrição:**\nEste workflow automatiza o processo de classificação de e-mails recebidos na conta Gmail, atribuindo rótulos específicos com base no conteúdo de cada mensagem. Utiliza um gatilho do Gmail para monitorar novos e-mails e integra a API do OpenAI para processar e classificar os textos em categorias como:\n\n- **Financeiro**\n- **Trabalho**\n- **Tecnologia**\n- **Educação**\n- **Segurança**\n- **Compras**\n- **Certificações**\n- **Faturas e Cobranças**\n\nApós a classificação, os rótulos apropriados são aplicados automaticamente nos e-mails, permitindo uma organização mais eficiente e a priorização de mensagens importantes. O workflow ajuda a economizar tempo ao gerenciar a caixa de entrada de maneira automatizada.\n\n\n\n",
-        "height": 603.9655403392034,
-        "width": 465.59430218515877,
+        "content": "# **Classificação Inteligente de E-mails com OpenAI e Groq**\n\n## **Descrição:**\n\nEste workflow automatiza o processo de classificação de e-mails recebidos em uma conta Gmail, atribuindo rótulos específicos com base no conteúdo de cada mensagem. Ele utiliza o **gatilho do Gmail** para monitorar novos e-mails, e duas abordagens diferentes para processamento e classificação dos textos:\n\n1. **OpenAI API:** Usada para análise semântica avançada, oferecendo uma classificação mais contextual e detalhada dos e-mails.\n2. **Groq (Generalized Representation for Querying):** Utilizado para um processamento de texto mais leve e eficiente, permitindo que consultas rápidas sejam feitas diretamente nos e-mails, extraindo padrões e classificações específicas sem a necessidade de enviar todos os dados para a API.\n\n### **Categorias de Classificação:**\n\n- **Financeiro**\n- **Trabalho**\n- **Tecnologia**\n- **Educação**\n- **Segurança**\n- **Compras**\n- **Certificações**\n- **Faturas e Cobranças**\n\nApós a classificação, os rótulos apropriados são aplicados automaticamente nos e-mails, permitindo uma organização mais eficiente e a priorização de mensagens importantes. O workflow ajuda a economizar tempo ao gerenciar a caixa de entrada de maneira automatizada.",
+        "height": 775.6358378086613,
+        "width": 645.7459456746058,
         "color": 6
       },
       "name": "Sticky Note3",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -500,
-        -40
+        -660,
+        0
       ],
       "id": "ac43a011-c813-486e-bdac-b42422c157bf"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e9ae2b3f-3648-40fb-bc69-54b0314d79a8",
+      "name": "Groq Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        400,
+        540
+      ],
+      "credentials": {
+        "groqApi": {
+          "id": "uk9cNMjAWhq4fiLx",
+          "name": "Groq account"
+        }
+      }
     },
     {
       "parameters": {
@@ -256,7 +275,7 @@
           "categories": [
             {
               "category": "Financeiro",
-              "description": "E-mails relacionados a transações financeiras, como cartões de crédito, investimentos, pagamentos, extratos e atualizações de contas bancárias. Esses e-mails também podem conter notificações de transferências, depósitos, retiradas e alertas de movimentações financeiras.\nPalavras-chave: Nubank, Santander, Pagamento, Extrato, Controle Financeiro, Fatura, Investimento, Transferência, Depósito, Retirada, Alerta Financeiro, Movimentação Bancária."
+              "description": "=Por favor, classifique o texto fornecido pelo usuário em uma das seguintes categorias: {categories}, considerando o contexto completo e a presença de múltiplas palavras-chave relacionadas à categoria financeira. O texto deve estar claramente relacionado a transações financeiras, como pagamentos, extratos bancários, ou investimentos. Não explique, e apenas produza o JSON.\n"
             },
             {
               "category": "Trabalho",
@@ -316,7 +335,7 @@
         ]
       ]
     },
-    "OpenAI Chat Model": {
+    "Groq Chat Model": {
       "ai_languageModel": [
         [
           {
@@ -395,7 +414,7 @@
     "saveManualExecutions": true,
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "versionId": "02b0fa12-d392-4850-81b2-b56fdfef2733",
+  "versionId": "7cc0458f-47d4-488e-89d8-22cca62fae30",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
@@ -419,6 +438,12 @@
       "updatedAt": "2024-10-08T19:13:31.266Z",
       "id": "Lp8GFAGTjJCQsNr3",
       "name": "OpenAI"
+    },
+    {
+      "createdAt": "2024-10-21T18:45:22.419Z",
+      "updatedAt": "2024-10-21T18:45:22.419Z",
+      "id": "rGmGu8Jcd4k7kmnK",
+      "name": "Groq"
     }
   ]
 }
