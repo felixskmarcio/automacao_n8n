@@ -1,0 +1,150 @@
+{
+  "name": "Send bulk messages to chats in Telegram",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        380,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "a9da4221-e116-4599-963d-84b3d34e7fcd"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$node[\"SplitInBatches\"].json[\"Chat ID\"]}}",
+        "text": "Hello",
+        "additionalFields": {}
+      },
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        940,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "8d4f3f1d-7d07-44f5-9fab-5a93d7038f20"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "range": "A:A",
+        "options": {}
+      },
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        560,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "86b47a80-d503-492d-94de-0cda5a71b52a",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yI9Xwt4GMIPqI0Ii",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": 30,
+        "options": {}
+      },
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        760,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "9bf3dfd1-5777-439e-9bd9-67b5b90cda7f"
+    },
+    {
+      "parameters": {
+        "amount": 30,
+        "unit": "seconds"
+      },
+      "name": "Wait1",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        1100,
+        20
+      ],
+      "webhookId": "22fca54c-eac4-44bc-adf7-68b33818695c",
+      "typeVersion": 1,
+      "id": "5da0e9a6-bf8d-4d07-9ca0-6f6a0cf6f41d"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "744df770-e7cd-49d7-9e6e-64ea6e5b5c57",
+  "meta": {
+    "templateId": "772",
+    "instanceId": "84730831191790985baed53fc7a01cadfe1ce240ecb11af4a4a4a0d7a204c0b8"
+  },
+  "id": "ypXDNDAXBJ5cSaNm",
+  "tags": []
+}

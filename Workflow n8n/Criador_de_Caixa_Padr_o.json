@@ -1,0 +1,419 @@
+{
+  "name": "Criador_de_Caixa_Padr_o",
+  "nodes": [
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "tableName": {
+          "__rl": true,
+          "value": "channel_api",
+          "mode": "list",
+          "cachedResultName": "channel_api"
+        },
+        "additionalFields": {},
+        "options": {}
+      },
+      "id": "0cdc5140-f620-4df4-85aa-bffb6120f2ad",
+      "name": "Postgres Trigger",
+      "type": "n8n-nodes-base.postgresTrigger",
+      "typeVersion": 1,
+      "position": [
+        460,
+        460
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "qMOim8DlBc0Fyahj",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "access_tokens",
+          "mode": "list",
+          "cachedResultName": "access_tokens"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "owner_id",
+              "value": "={{ $('Puxa Usuarios').item.json[\"user_id\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fae0b9c7-d8eb-43de-9888-9cd5e43eae70",
+      "name": "Pega Token Usuario",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        820,
+        460
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "qMOim8DlBc0Fyahj",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const length = 25;  // Você pode ajustar isso conforme necessário\nconst charset = \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\";\nlet result = \"\";\n\nfor (let i = 0; i < length; i++) {\n    result += charset.charAt(Math.floor(Math.random() * charset.length));\n}\n\nreturn [\n    {\n        json: {\n            idsessao: result\n        }\n    }\n];\n"
+      },
+      "id": "5ba4ffac-24b8-4772-b66c-cca83cf981fe",
+      "name": "Gerador de ID Sessão",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://evolution.felixbr.org/instance/create",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "=bae6abadb008b1506f1ea33aa310c484"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"instanceName\": \"{{ $('Gerador de ID Sessão').item.json[\"idsessao\"] }}_Whatsapp_IdCW_{{ $('Postgres Trigger').item.json[\"payload\"][\"account_id\"] }}\",\n    \"token\": \"\",\n    \"qrcode\": true,\n    \"integration\": \"WHATSAPP-BAILEYS\",\n    \"rejectCall\": true,\n    \"msgCall\": \"Infelizmente não aceitamos ligações\",\n    \"groupsIgnore\": false,\n    \"alwaysOnline\": false,\n    \"readMessages\": true,\n    \"readStatus\": true,\n    \"syncFullHistory\": false,\n    \"chatwootAccountId\": \"{{ $('Postgres Trigger').item.json[\"payload\"][\"account_id\"] }}\",\n    \"chatwootToken\": \"{{ $('Pega Token Usuario').item.json[\"token\"] }}\",\n    \"chatwootUrl\": \"https://chatwootn.felixbr.org/\",\n    \"chatwootSignMsg\": true,\n    \"chatwootReopenConversation\": false,\n    \"chatwootConversationPending\": false,\n    \"chatwootImportContacts\": true,\n    \"chatwootNameInbox\": \"{{ $('Pega Nome da Caixa').item.json[\"name\"] }}\",\n    \"chatwootMergeBrazilContacts\": true,\n    \"chatwootImportMessages\": true,\n    \"chatwootDaysLimitImportMessages\": 90,\n    \"chatwootOrganization\": \"Gerador de QR\",\n    \"chatwootLogo\": \"https://astraonline.com.br/wp-content/uploads/2024/08/qr.png\"\n}",
+        "options": {}
+      },
+      "id": "98b888a8-99a9-4284-a7a5-7a7b95f74add",
+      "name": "Cria API Whatsapp1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "account_users",
+          "mode": "list",
+          "cachedResultName": "account_users"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "account_id",
+              "value": "={{ $json.payload.account_id }}"
+            },
+            {
+              "column": "role",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ebaf21d1-3340-4adf-a5b2-5715d3686064",
+      "name": "Puxa Usuarios",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        640,
+        460
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "qMOim8DlBc0Fyahj",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "inboxes",
+          "mode": "list",
+          "cachedResultName": "inboxes"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "account_id",
+              "value": "={{ $('Postgres Trigger').item.json[\"payload\"][\"account_id\"] }}"
+            },
+            {
+              "column": "channel_id",
+              "value": "={{ $('Postgres Trigger').item.json.payload.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "716ae6de-1225-4b7e-948a-b9488a8b02ea",
+      "name": "Pega Nome da Caixa",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1000,
+        460
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "qMOim8DlBc0Fyahj",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "channel_api",
+          "mode": "list",
+          "cachedResultName": "channel_api"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Postgres Trigger').item.json[\"payload\"][\"id\"] }}",
+            "account_id": "={{ $('Postgres Trigger').item.json[\"payload\"][\"account_id\"] }}",
+            "webhook_url": "={{ $('Cria API Whatsapp1').item.json[\"chatwoot\"][\"webhookUrl\"] }}",
+            "created_at": "={{ $now }}",
+            "updated_at": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "account_id",
+              "displayName": "account_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "webhook_url",
+              "displayName": "webhook_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "identifier",
+              "displayName": "identifier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "hmac_token",
+              "displayName": "hmac_token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "hmac_mandatory",
+              "displayName": "hmac_mandatory",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "additional_attributes",
+              "displayName": "additional_attributes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d3d34889-876b-48f9-97ec-7f82b0184436",
+      "name": "Pega Nome da Caixa1",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        1560,
+        460
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "qMOim8DlBc0Fyahj",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Postgres Trigger": {
+      "main": [
+        [
+          {
+            "node": "Puxa Usuarios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerador de ID Sessão": {
+      "main": [
+        [
+          {
+            "node": "Cria API Whatsapp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pega Token Usuario": {
+      "main": [
+        [
+          {
+            "node": "Pega Nome da Caixa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Puxa Usuarios": {
+      "main": [
+        [
+          {
+            "node": "Pega Token Usuario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pega Nome da Caixa": {
+      "main": [
+        [
+          {
+            "node": "Gerador de ID Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria API Whatsapp1": {
+      "main": [
+        [
+          {
+            "node": "Pega Nome da Caixa1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cdad1d14-7d98-4b53-af83-2b021af1f7cd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "pLGPacwQLfwF6HX3",
+  "tags": []
+}

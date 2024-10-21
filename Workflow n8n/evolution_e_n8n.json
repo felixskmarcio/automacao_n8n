@@ -1,0 +1,452 @@
+{
+  "name": "evolution e n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "32e1c12b-5f9f-48ac-b6a6-49f096141dfb",
+        "options": {}
+      },
+      "id": "2deca5c0-a873-4ec8-ab5a-6e55861028e6",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        180
+      ],
+      "webhookId": "32e1c12b-5f9f-48ac-b6a6-49f096141dfb"
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "mensagem",
+              "stringValue": "={{ $json.body.data.message.extendedTextMessage.text }}{{ $json.body.data.message.conversation }}"
+            }
+          ]
+        },
+        "include": "none",
+        "options": {}
+      },
+      "id": "554411cc-6015-4683-9a47-1ccedd87a8f2",
+      "name": "mensagem",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        860,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info Base').item.json.UrlEvolution }}/message/sendText/{{ $('Webhook').item.json.body.instance }} ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $('Info Base').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"number\":\"{{ $('Webhook').item.json.body.data.key.remoteJid }}\",\"options\":{\"delay\":5000,\"presence\":\"composing\"},\"textMessage\":{\"text\":\"teste\"}}  ",
+        "options": {}
+      },
+      "id": "3dcc5280-4ff1-4394-b98a-987296e45179",
+      "name": "sendText1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1280,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d963c9a5-8b85-47c3-a5aa-8f6f019e5e34",
+              "name": "UrlEvolution",
+              "value": "https://apievolution.xpopdigital.com.br",
+              "type": "string"
+            },
+            {
+              "id": "b601f686-c6bd-40d5-95ff-984951e62248",
+              "name": "apikey",
+              "value": "bebd4cd8cc5441392cbf4157bdd70b09",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cc42d10c-002a-4719-ae85-12652d351b0e",
+      "name": "Info Base",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        680,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info Base').item.json.UrlEvolution }}/message/sendMedia/{{ $('Webhook').item.json.body.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $('Info Base').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"number\": \"{{ $('Webhook').item.json.body.data.key.remoteJid }}\",\n    \"options\": {\n        \"delay\": 1200,\n        \"presence\": \"composing\"\n    },\n    \"mediaMessage\": {\n        \"mediatype\": \"image\",\n        \"caption\": \"This is an example JPG image file sent by Evolution-API via URL.\",\n        \"media\": \"https://evolution-api.com/files/evolution-api.jpg\"\n    }\n}",
+        "options": {}
+      },
+      "id": "3b5ebe01-a4b5-40f8-996f-424733514386",
+      "name": "sendMedia",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1480,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info Base').item.json.UrlEvolution }}/message/sendWhatsAppAudio/{{ $('Webhook').item.json.body.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $('Info Base').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"number\":\"{{ $('Webhook').item.json.body.data.key.remoteJid }}\",\"options\":{\"delay\":42000,\"presence\":\"recording\",\"encoding\":true},\"audioMessage\":{\"audio\":\"https://minioapiresende.xpopdigital.com.br/typebot/WhatsApp%20Ptt%202024-02-01%20at%2021.12.17.mp4\"}} ",
+        "options": {}
+      },
+      "id": "e9e94480-19fb-4da5-9572-2daaa431e96f",
+      "name": "sendWhatsAppAudio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1300,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info Base').item.json.UrlEvolution }}/message/sendList/{{ $('Webhook').item.json.body.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $('Info Base').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"number\": \"{{ $('Webhook').item.json.body.data.key.remoteJid }}\",\n    \"options\": {\n        \"delay\": 5000,\n        \"presence\": \"composing\"\n    },\n    \"listMessage\": {\n        \"title\": \"Me diz uma coisa...\",\n        \"description\": \"\\nVocê possui *CNPJ* de construtora ou loja de materiais de construção?\",\n        \"buttonText\": \"CLIQUE AQUI - VER OPÇÕES\",\n\n        \"sections\": [\n            {\n            \"title\": \"\",    \n                \"rows\": [\n                    {\n                        \"title\": \"SIM\",\n                        \"description\": \"Tenho uma empresa de construção / loja de materiais \",\n                        \"rowId\": \"rowId 001\"\n                    },\n                    {\n                        \"title\": \"NÃO\",\n                        \"description\": \"Sou consumidor final\",\n                        \"rowId\": \"rowId 002\"\n                    }\n                ]\n            }\n        ]\n    }\n}",
+        "options": {}
+      },
+      "id": "4121ede3-3390-4d74-99bc-31dfac8b5f94",
+      "name": "sendLIst",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1080,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.data.message.listResponseMessage.title }}",
+                    "rightValue": "SIM",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "1de1fe16-f732-471f-b369-bd04aaee864c",
+                    "leftValue": "={{ $('Webhook').item.json.body.data.message.listResponseMessage.title }}",
+                    "rightValue": "NÃO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "faf16e32-3d6f-4fac-9f49-cdaf126f0bb9",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1080,
+        180
+      ]
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.xpopdigital.com.br",
+            "user-agent": "axios/1.6.7",
+            "content-length": "2074",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "n8n.xpopdigital.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "1fe6740f07e1",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "pamela",
+            "data": {
+              "key": {
+                "remoteJid": "5522998908709@s.whatsapp.net",
+                "fromMe": false,
+                "id": "3EB0949E1EAD9DF4238557"
+              },
+              "pushName": "Rafael S Pereira",
+              "message": {
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "7fwh0/6pb/2S5A==",
+                    "senderTimestamp": "1710122366",
+                    "senderAccountType": "E2EE",
+                    "receiverAccountType": "E2EE",
+                    "recipientKeyHash": "I7e7966OT/l/Aw==",
+                    "recipientTimestamp": "1709847076"
+                  },
+                  "deviceListMetadataVersion": 2
+                },
+                "listResponseMessage": {
+                  "title": "SIM",
+                  "listType": "SINGLE_SELECT",
+                  "singleSelectReply": {
+                    "selectedRowId": "rowId 001"
+                  },
+                  "contextInfo": {
+                    "stanzaId": "BAE52C107FE6C545",
+                    "participant": "5522935001129@s.whatsapp.net",
+                    "quotedMessage": {
+                      "listMessage": {
+                        "title": "Me diz uma coisa...",
+                        "description": "\nVocê possui *CNPJ* de construtora ou loja de materiais de construção?",
+                        "buttonText": "CLIQUE AQUI - VER OPÇÕES",
+                        "listType": "SINGLE_SELECT",
+                        "sections": [
+                          {
+                            "title": "",
+                            "rows": [
+                              {
+                                "title": "SIM",
+                                "description": "Tenho uma empresa de construção / loja de materiais ",
+                                "rowId": "rowId 001"
+                              },
+                              {
+                                "title": "NÃO",
+                                "description": "Sou consumidor final",
+                                "rowId": "rowId 002"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "description": "Tenho uma empresa de construção / loja de materiais "
+                }
+              },
+              "contextInfo": {
+                "stanzaId": "BAE52C107FE6C545",
+                "participant": "5522935001129@s.whatsapp.net",
+                "quotedMessage": {
+                  "listMessage": {
+                    "title": "Me diz uma coisa...",
+                    "description": "\nVocê possui *CNPJ* de construtora ou loja de materiais de construção?",
+                    "buttonText": "CLIQUE AQUI - VER OPÇÕES",
+                    "listType": "SINGLE_SELECT",
+                    "sections": [
+                      {
+                        "title": "",
+                        "rows": [
+                          {
+                            "title": "SIM",
+                            "description": "Tenho uma empresa de construção / loja de materiais ",
+                            "rowId": "rowId 001"
+                          },
+                          {
+                            "title": "NÃO",
+                            "description": "Sou consumidor final",
+                            "rowId": "rowId 002"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "messageType": "listResponseMessage",
+              "messageTimestamp": 1710279326,
+              "owner": "pamela",
+              "source": "web"
+            },
+            "destination": "https://n8n.xpopdigital.com.br/webhook-test/32e1c12b-5f9f-48ac-b6a6-49f096141dfb",
+            "date_time": "2024-03-12T18:35:26.534Z",
+            "sender": "5522935001129@s.whatsapp.net",
+            "server_url": "https://apievolution.xpopdigital.com.br",
+            "apikey": "2edhzktwhuw3uie3r4aqv"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Info Base",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "mensagem": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Info Base": {
+      "main": [
+        [
+          {
+            "node": "mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sendText1": {
+      "main": [
+        []
+      ]
+    },
+    "sendWhatsAppAudio": {
+      "main": [
+        [
+          {
+            "node": "sendMedia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "sendText1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e9c7d108-c4ca-4ef9-905f-aadc01fffd28",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "LbNOw3Hf9wzbsACU",
+  "tags": []
+}

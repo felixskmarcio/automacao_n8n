@@ -1,0 +1,368 @@
+{
+  "name": "TESTE MILESIMO",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "152d8df1-3f4e-4a0a-a0e6-bab8408eb487",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        340,
+        220
+      ],
+      "typeVersion": 1,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://sistema.prestek.com.br/webservice/v1/cliente_contrato",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "ixcsoft",
+              "value": "listar"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "options": {}
+      },
+      "id": "2da62603-9c8d-4b85-9a9e-8cd80a344b2f",
+      "name": "Contrato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        100
+      ],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "TaC01Qo6a6KolQ5k",
+          "name": "Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://sistema.prestek.com.br/webservice/v1/cliente",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Basic MzI2OmExZWEzZDhlOTdiMDlmMTUzZTAyNzYzY2M5YjJlYmRmYThlYWVjMWMwNzBiNjczOGM3ZDhiN2NlYjU2NzIwMTY="
+            },
+            {
+              "name": "ixcsoft",
+              "value": "listar"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "ativo",
+              "value": "S"
+            },
+            {
+              "name": "razao"
+            },
+            {
+              "name": "fone"
+            },
+            {
+              "name": "qtype",
+              "value": "status_internet"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7f7e4b78-3b2f-4aab-bdb1-0a1594720739",
+      "name": "Cliente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        340
+      ],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "TaC01Qo6a6KolQ5k",
+          "name": "Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "daysInterval": 7,
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "02a07ea9-e2b2-4cf8-91c3-7ea3d2a31d61",
+      "name": "Cliente Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -140,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Recebe os dados como uma string JSON do nó anterior\nconst jsonString = items[0].json.data;\n\n// Converte a string JSON em um objeto JavaScript\nconst data = JSON.parse(jsonString);\n\n// Extrair os campos desejados dos registros com status_internet igual a \"CA\"\nconst extractedData = data.registros\n    .filter(registro => registro.status_internet === 'CA')\n    .map(registro => ({\n        id: registro.id || '',\n        id_cliente: registro.id_cliente || '',\n        status_internet: registro.status_internet || ''\n    }));\n\n// Retornar os dados extraídos no formato esperado pelo n8n\nreturn extractedData.map(record => ({ json: record }));\n"
+      },
+      "id": "431caa8b-d077-4cea-8e69-3d4f2552a8b8",
+      "name": "codigo_contrato",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrair a string JSON do nó de entrada\nconst json_string = $input.item.json.data;\n\n// Converte a string JSON em um objeto JavaScript\nconst data = JSON.parse(json_string);\n\n// Verifica a página e total de registros (para debug)\nconsole.log(`Página: ${data.page}`);\nconsole.log(`Total de registros: ${data.total}`);\n\n// Extrai os registros do JSON\nconst registros = data.registros || [];\n\n// Processa cada registro individualmente\nconst extracted_data = registros.map(registro => ({\n    id: registro.id || '',\n    ativo: registro.ativo || '',\n    razao: registro.razao || '',\n    fone: registro.fone || '',\n    contrato_id: registro.id_conta || ''\n}));\n\n// Verifica o número de registros processados (para debug)\nconsole.log(`Total de registros processados: ${extracted_data.length}`);\n\n// Retorna os registros no formato esperado pelo n8n\nreturn extracted_data.map(record => ({ json: record }));\n"
+      },
+      "id": "903d7bf8-5e1b-4fa1-9600-253e31e03d17",
+      "name": "codigo_cliente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const resultado = $input.all().map(item => {\n    return {\n        json: {\n            razao: item.json.razao || \"Razão não encontrada\",\n            fone: item.json.fone || \"Telefone não encontrado\"\n        }\n    };\n});\n\nreturn resultado;\n"
+      },
+      "id": "9710bc14-d054-4564-a661-ead1fbca9d15",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1720,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let razaoCount = 0;\nlet foneCount = 0;\n\nconst resultado = $input.all().map(item => {\n    // Incrementa os contadores se os valores não forem \"não encontrados\"\n    if (item.json.razao) {\n        razaoCount++;\n    }\n    if (item.json.fone) {\n        foneCount++;\n    }\n\n    return {\n        json: {\n            razao: item.json.razao || \"Razão não encontrada\",\n            fone: item.json.fone || \"Telefone não encontrado\"\n        }\n    };\n});\n\n// Adiciona a contagem ao resultado final\nresultado.push({\n    json: {\n        total_razao: razaoCount,\n        total_fone: foneCount\n    }\n});\n\nreturn resultado;\n"
+      },
+      "id": "dc790b78-bdb0-48d2-b1cc-043f2971387a",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        -100
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "82c88735-ab4a-402a-85d3-47bb904ee2b2",
+              "name": "razao",
+              "value": "={{ $json.razao }}",
+              "type": "string"
+            },
+            {
+              "id": "09370e6a-8e89-4444-8468-b54caf9d41b5",
+              "name": "fone",
+              "value": "={{ $json.fone }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "61f46cf4-bfd8-4454-8418-1b250657a0d1",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1580,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://sistema.prestek.com.br/webservice/v1/cliente_contrato",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "ixcsoft",
+              "value": "listar"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "qtype",
+              "value": "status_internet"
+            },
+            {
+              "name": "query",
+              "value": "CA"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ab7c4d54-5efa-4f1e-8967-1fb5672f8290",
+      "name": "Contrato1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        420,
+        520
+      ],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "TaC01Qo6a6KolQ5k",
+          "name": "Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "f2ed8279-9ad4-4985-932d-83e83449af55",
+      "name": "Unificação",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1400,
+        240
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "notesInFlow": false
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Cliente",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Contrato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contrato": {
+      "main": [
+        [
+          {
+            "node": "codigo_contrato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cliente": {
+      "main": [
+        [
+          {
+            "node": "codigo_cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "codigo_contrato": {
+      "main": [
+        [
+          {
+            "node": "Unificação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "codigo_cliente": {
+      "main": [
+        [
+          {
+            "node": "Unificação",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unificação": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2da5e9dc-8482-4e94-9ca2-e59ddad8a563",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "84730831191790985baed53fc7a01cadfe1ce240ecb11af4a4a4a0d7a204c0b8"
+  },
+  "id": "8MVKBEbWhJCmrFYC",
+  "tags": []
+}

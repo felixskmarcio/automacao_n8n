@@ -1,0 +1,246 @@
+{
+  "name": "IXC disparo clientes bloqueados",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "daysInterval": 7,
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "4ec18f68-8b2a-4d17-af6e-d305e049f8ff",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -620,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://sistema.prestek.com.br/webservice/v1/cliente",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Basic MzI2OmExZWEzZDhlOTdiMDlmMTUzZTAyNzYzY2M5YjJlYmRmYThlYWVjMWMwNzBiNjczOGM3ZDhiN2NlYjU2NzIwMTY="
+            },
+            {
+              "name": "ixcsoft",
+              "value": "listar"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "ativo",
+              "value": "S"
+            },
+            {
+              "name": "razao"
+            },
+            {
+              "name": "fone"
+            },
+            {
+              "name": "qtype",
+              "value": "status_internet"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9a061cdb-ed35-46c1-b7c8-21e8d12f2378",
+      "name": "HTTP Request - Cliente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -320,
+        620
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "retryOnFail": true,
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "TaC01Qo6a6KolQ5k",
+          "name": "Teste"
+        },
+        "httpHeaderAuth": {
+          "id": "E8NMFF5AuYrSqi8P",
+          "name": "Header Auth account IXC"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://sistema.prestek.com.br/webservice/v1/cliente_contrato",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "ixcsoft",
+              "value": "listar"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "qtype",
+              "value": "status_internet"
+            },
+            {
+              "name": "query",
+              "value": "CA"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "10d90b61-d244-4433-8d22-c1157e7d2de2",
+      "name": "HTTP Request - Contrato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -300,
+        340
+      ],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "TaC01Qo6a6KolQ5k",
+          "name": "Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# Recebe os dados de entrada\ndata = [{'razao': 'SUPERMERCADO SUPER SANTOS LTDA', 'fone': '(82) 99124-7348', 'uf': 'AL'}]  # Exemplo de entrada\n\ndef formatar_telefone(fone):\n    if fone:\n        # Remove caracteres não numéricos\n        numero = ''.join(filter(str.isdigit, fone))\n        if len(numero) == 11:\n            return f\"+55{numero[:2]}{numero[2:7]}{numero[7:]}\"  # Sem hífen\n        elif len(numero) == 10:\n            return f\"+55{numero[:2]}{numero[2:6]}{numero[6:]}\"  # Sem hífen\n    return f\"+55{fone}\"\n\n# Processa cada item nos dados\nresultados = []\nfor item in data:\n    razao = item.get('razao', '')\n    fone = formatar_telefone(item.get('fone', ''))\n    \n    # Extrai o primeiro nome do campo 'razao'\n    primeiro_nome = razao.split()[0] if razao else ''\n    \n    resultados.append({\n        'razao': primeiro_nome,\n        'fone': fone,  # Remove espaços e hífens do telefone\n    })\n\nreturn resultados\n"
+      },
+      "id": "7b8663be-77ee-4d2f-87c6-8a0df0a4b6bb",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        200,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Recebe os dados como uma string JSON do nó anterior\nconst jsonString = items[0].json.data;\n\n// Converte a string JSON em um objeto JavaScript\nconst data = JSON.parse(jsonString);\n\n// Extrair os campos desejados dos registros com status_internet igual a \"CA\"\nconst extractedData = data.registros\n    .filter(registro => registro.status_internet === 'CA')\n    .map(registro => ({\n        id: registro.id || '',\n        id_cliente: registro.id_cliente || '',\n        status_internet: registro.status_internet || ''\n    }));\n\n// Retornar os dados extraídos no formato esperado pelo n8n\nreturn extractedData.map(record => ({ json: record }));\n"
+      },
+      "id": "1838534b-c3c2-435f-8b0a-9726b3ccd553",
+      "name": "Code2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        20,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\n\n# Recebe os dados como uma string JSON do nó anterior\njson_string = items[0]['json']['data']\n\n# Converte a string JSON em um objeto Python\ndata = json.loads(json_string)\n\n# Extrair os campos desejados dos registros, incluindo 'id' do cliente e do contrato\nextracted_data = [\n    {\n        'id': registro.get('id', ''),  # Adiciona o id do cliente\n        'ativo': registro.get('ativo', ''),\n        'razao': registro.get('razao', ''),\n        'fone': registro.get('fone', ''),\n        'contrato_id': registro.get('id_conta', '')  # Adiciona o id do contrato, ajuste se necessário\n    }\n    for registro in data.get('registros', [])\n]\n\n# Retornar os dados extraídos no formato esperado pelo n8n\nreturn [{'json': record} for record in extracted_data]\n"
+      },
+      "id": "c6cfe905-6e84-4fe2-b89b-2ceb778e49ee",
+      "name": "Code3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        40,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import json\n\n# Recebe os dados como uma string JSON do nó anterior\njson_string = items[0]['json']['data']\n\n# Converte a string JSON em um objeto Python\ndata = json.loads(json_string)\n\n# Extrair os campos desejados dos registros, incluindo 'id' do cliente e do contrato\nextracted_data = [\n    {\n        'id': registro.get('id', ''),  # Adiciona o id do cliente\n        'ativo': registro.get('ativo', ''),\n        'razao': registro.get('razao', ''),\n        'fone': registro.get('fone', ''),\n        'contrato_id': registro.get('id_conta', '')  # Adiciona o id do contrato, ajuste se necessário\n    }\n    for registro in data.get('registros', [])\n]\n\n# Retornar os dados extraídos no formato esperado pelo n8n\nreturn [{'json': record} for record in extracted_data]\n"
+      },
+      "id": "b265caeb-f473-41d2-a7f1-023b7e98df29",
+      "name": "Code4",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -100,
+        640
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Cliente": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Contrato": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3d7a0778-ffd5-48b2-b690-be878e668b1e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "84730831191790985baed53fc7a01cadfe1ce240ecb11af4a4a4a0d7a204c0b8"
+  },
+  "id": "bQ1brjYsHye0tp3x",
+  "tags": []
+}

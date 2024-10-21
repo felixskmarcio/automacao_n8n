@@ -1,0 +1,1211 @@
+
+{
+	"info": {
+		"name": "Collection CRUD cliente_contrato",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Inserir cliente_contrato",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true,
+					"accept-encoding": true,
+					"accept": true,
+					"user-agent": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "token após o \" : \"",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "id do usuario API",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "ixcsoft",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						
+                           {
+                             "key": "tipo",
+                             "value": "I",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_cliente",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_vd_contrato",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "descricao_aux_plano_venda",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "contrato",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_tipo_contrato",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_modelo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "assinatura_digital",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "integracao_assinatura_digital",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "liberacao_bloqueio_manual",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_filial",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "indicacao_contrato_id",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_assinatura",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "isentar_contrato",
+                             "value": "S",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_ativacao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_renovacao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "pago_ate_data",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "status",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "status_internet",
+                             "value": "D",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "status_velocidade",
+                             "value": "N",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "tipo_produtos_plano",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "motivo_inclusao",
+                             "value": "I",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_indexador_reajuste",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "url_assinatura_digital",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "token_assinatura_digital",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_tipo_documento",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_carteira_cobranca",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_vendedor",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "moeda",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "comissao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "cc_previsao",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "tipo_cobranca",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "renovacao_automatica",
+                             "value": "S",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "gerar_finan_assin_digital_contrato",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "base_geracao_tipo_doc",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_contrato_principal",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "num_parcelas_atraso",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "nf_info_adicionais",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "credit_card_recorrente_bandeira_cartao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "credit_card_recorrente_token",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "ids_contratos_recorrencia",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "tipo_doc_opc",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "tipo_doc_opc2",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "tipo_doc_opc3",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "tipo_doc_opc4",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_tipo_doc_ativ",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_produto_ativ",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "taxa_instalacao",
+                             "value": "0.00",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_cond_pag_ativ",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_responsavel",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_vendedor_ativ",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "ativacao_numero_parcelas",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "ativacao_vencimentos",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "btn_nf_ativacao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "ativacao_valor_parcela",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "fidelidade",
+                             "value": "0",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_expiracao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "dica_data_expiracao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "desconto_fidelidade",
+                             "value": "0.00",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_instalador",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "taxa_improdutiva",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "venc_personalizado",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "com_entrada",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "dia_fixo_vencimento",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "tipo_condicao_pag",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "bloqueio_automatico",
+                             "value": "S",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "nao_bloquear_ate",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "aviso_atraso",
+                             "value": "S",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "nao_avisar_ate",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "desbloqueio_confianca",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "desbloqueio_confianca_ativo",
+                             "value": "N",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "restricao_auto_desbloqueio",
+                             "value": "N",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "motivo_restricao_auto_desbloq",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "obs",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "nao_susp_parc_ate",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "liberacao_suspensao_parcial",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "utilizando_auto_libera_susp_parc",
+                             "value": "N",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "restricao_auto_libera_susp_parcial",
+                             "value": "N",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "motivo_restri_auto_libera_parc",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "contrato_suspenso",
+                             "value": "N",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_inicial_suspensao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_final_suspensao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_acesso_desativado",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_cancelamento",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_responsavel_cancelamento",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "motivo_cancelamento",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "motivo_adicional",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "concorrente_mot_adicional",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "dica_motivo_adicional_cliente_contrato",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "obs_cancelamento",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_negativacao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_responsavel_negativacao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "protocolo_negativacao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_motivo_negativacao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "obs_negativacao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_desistencia",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_responsavel_desistencia",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "motivo_desistencia",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "obs_desistencia",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "obs_contrato",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "alerta_contrato",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "imp_realizado",
+                             "value": "S",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "imp_inicial",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "imp_carteira",
+                             "value": "N",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "imp_importacao",
+                             "value": "N",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "imp_treinamento",
+                             "value": "N",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "imp_rede",
+                             "value": "N",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "imp_bkp",
+                             "value": "N",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "imp_obs",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "imp_final",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "imp_status",
+                             "value": "A",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "imp_motivo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "dt_ult_bloq_auto",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "dt_ult_bloq_manual",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "dt_ult_finan_atraso",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "dt_ult_des_bloq_conf",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "dt_ult_liberacao_susp_parc",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "dt_ult_ativacao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "dt_utl_negativacao",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "dt_ult_desiste",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_cadastro_sistema",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "ultima_atualizacao",
+                             "value": "CURRENT_TIMESTAMP",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "data_retomada_contrato",
+                             "value": "NULL",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "endereco_padrao_cliente",
+                             "value": "S",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "endereco_padrao_alert",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "id_condominio",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "condominio_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "bloco",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "bloco_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "apartamento",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "apartamento_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "cep",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "cep_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "endereco",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "endereco_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "numero",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "numero_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "bairro",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "bairro_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "cidade",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "cidade_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "complemento",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "complemento_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "referencia",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "referencia_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "latitude",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "latitude_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "longitude",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "longitude_novo",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "tipo_localidade",
+                             "value": "U",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "avalista_1",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "avalista_2",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "testemunha_assinatura_digital",
+                             "value": "",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "document_photo",
+                             "value": "P",
+                             "type": "text"
+                           },
+
+                           {
+                             "key": "selfie_photo",
+                             "value": "P",
+                             "type": "text"
+
+                          }
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://HOST/webservice/v1/cliente",
+					"protocol": "https",
+					"host": [
+						"HOST"
+					],
+					"path": [
+						"webservice",
+						"v1",
+						"cliente_contrato"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar cliente_contrato",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true,
+					"accept-encoding": true,
+					"accept": true,
+					"user-agent": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "token após o \" : \"",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "id do usuario API",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "ixcsoft",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://HOST/webservice/v1/cliente_contrato/Id_a_deletar",
+					"protocol": "https",
+					"host": [
+						"HOST"
+					],
+					"path": [
+						"webservice",
+						"v1",
+						"cliente_contrato",
+						"Id_a_deletar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar cliente_contrato",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true,
+					"accept-encoding": true,
+					"accept": true,
+					"user-agent": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "token após o \" : \"",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "id do usuario API",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "ixcsoft",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tipo\": \"I\",\n    \"id_cliente\": \"\",\n    \"id_vd_contrato\": \"\",\n    \"descricao_aux_plano_venda\": \"\",\n    \"contrato\": \"\",\n    \"id_tipo_contrato\": \"\",\n    \"id_modelo\": \"\",\n    \"assinatura_digital\": \"P\",\n    \"integracao_assinatura_digital\": \"P\",\n    \"liberacao_bloqueio_manual\": \"P\",\n    \"id_filial\": \"\",\n    \"indicacao_contrato_id\": \"\",\n    \"data_assinatura\": \"\",\n    \"isentar_contrato\": \"S\",\n    \"data_ativacao\": \"\",\n    \"data\": \"\",\n    \"data_renovacao\": \"\",\n    \"pago_ate_data\": \"\",\n    \"status\": \"P\",\n    \"status_internet\": \"D\",\n    \"status_velocidade\": \"N\",\n    \"tipo_produtos_plano\": \"P\",\n    \"motivo_inclusao\": \"I\",\n    \"id_indexador_reajuste\": \"\",\n    \"url_assinatura_digital\": \"\",\n    \"token_assinatura_digital\": \"\",\n    \"id_tipo_documento\": \"\",\n    \"id_carteira_cobranca\": \"\",\n    \"id_vendedor\": \"\",\n    \"moeda\": \"\",\n    \"comissao\": \"\",\n    \"cc_previsao\": \"P\",\n    \"tipo_cobranca\": \"P\",\n    \"renovacao_automatica\": \"S\",\n    \"gerar_finan_assin_digital_contrato\": \"P\",\n    \"base_geracao_tipo_doc\": \"P\",\n    \"id_contrato_principal\": \"\",\n    \"num_parcelas_atraso\": \"\",\n    \"nf_info_adicionais\": \"\",\n    \"credit_card_recorrente_bandeira_cartao\": \"\",\n    \"credit_card_recorrente_token\": \"\",\n    \"ids_contratos_recorrencia\": \"\",\n    \"tipo_doc_opc\": \"\",\n    \"tipo_doc_opc2\": \"\",\n    \"tipo_doc_opc3\": \"\",\n    \"tipo_doc_opc4\": \"\",\n    \"id_tipo_doc_ativ\": \"\",\n    \"id_produto_ativ\": \"\",\n    \"taxa_instalacao\": \"0.00\",\n    \"id_cond_pag_ativ\": \"\",\n    \"id_responsavel\": \"\",\n    \"id_vendedor_ativ\": \"\",\n    \"ativacao_numero_parcelas\": \"\",\n    \"ativacao_vencimentos\": \"\",\n    \"btn_nf_ativacao\": \"\",\n    \"ativacao_valor_parcela\": \"\",\n    \"fidelidade\": \"0\",\n    \"data_expiracao\": \"\",\n    \"dica_data_expiracao\": \"\",\n    \"desconto_fidelidade\": \"0.00\",\n    \"id_instalador\": \"\",\n    \"taxa_improdutiva\": \"\",\n    \"venc_personalizado\": \"\",\n    \"com_entrada\": \"\",\n    \"dia_fixo_vencimento\": \"\",\n    \"tipo_condicao_pag\": \"\",\n    \"bloqueio_automatico\": \"S\",\n    \"nao_bloquear_ate\": \"\",\n    \"aviso_atraso\": \"S\",\n    \"nao_avisar_ate\": \"\",\n    \"desbloqueio_confianca\": \"P\",\n    \"desbloqueio_confianca_ativo\": \"N\",\n    \"restricao_auto_desbloqueio\": \"N\",\n    \"motivo_restricao_auto_desbloq\": \"\",\n    \"obs\": \"\",\n    \"nao_susp_parc_ate\": \"\",\n    \"liberacao_suspensao_parcial\": \"P\",\n    \"utilizando_auto_libera_susp_parc\": \"N\",\n    \"restricao_auto_libera_susp_parcial\": \"N\",\n    \"motivo_restri_auto_libera_parc\": \"\",\n    \"contrato_suspenso\": \"N\",\n    \"data_inicial_suspensao\": \"\",\n    \"data_final_suspensao\": \"\",\n    \"data_acesso_desativado\": \"\",\n    \"data_cancelamento\": \"\",\n    \"id_responsavel_cancelamento\": \"\",\n    \"motivo_cancelamento\": \"\",\n    \"motivo_adicional\": \"\",\n    \"concorrente_mot_adicional\": \"\",\n    \"dica_motivo_adicional_cliente_contrato\": \"\",\n    \"obs_cancelamento\": \"\",\n    \"data_negativacao\": \"\",\n    \"id_responsavel_negativacao\": \"\",\n    \"protocolo_negativacao\": \"\",\n    \"id_motivo_negativacao\": \"\",\n    \"obs_negativacao\": \"\",\n    \"data_desistencia\": \"\",\n    \"id_responsavel_desistencia\": \"\",\n    \"motivo_desistencia\": \"\",\n    \"obs_desistencia\": \"\",\n    \"obs_contrato\": \"\",\n    \"alerta_contrato\": \"\",\n    \"imp_realizado\": \"S\",\n    \"imp_inicial\": \"\",\n    \"imp_carteira\": \"N\",\n    \"imp_importacao\": \"N\",\n    \"imp_treinamento\": \"N\",\n    \"imp_rede\": \"N\",\n    \"imp_bkp\": \"N\",\n    \"imp_obs\": \"\",\n    \"imp_final\": \"\",\n    \"imp_status\": \"A\",\n    \"imp_motivo\": \"\",\n    \"dt_ult_bloq_auto\": \"\",\n    \"dt_ult_bloq_manual\": \"\",\n    \"dt_ult_finan_atraso\": \"\",\n    \"dt_ult_des_bloq_conf\": \"\",\n    \"dt_ult_liberacao_susp_parc\": \"\",\n    \"dt_ult_ativacao\": \"\",\n    \"dt_utl_negativacao\": \"\",\n    \"dt_ult_desiste\": \"\",\n    \"data_cadastro_sistema\": \"\",\n    \"ultima_atualizacao\": \"CURRENT_TIMESTAMP\",\n    \"data_retomada_contrato\": \"NULL\",\n    \"endereco_padrao_cliente\": \"S\",\n    \"endereco_padrao_alert\": \"\",\n    \"id_condominio\": \"\",\n    \"condominio_novo\": \"\",\n    \"bloco\": \"\",\n    \"bloco_novo\": \"\",\n    \"apartamento\": \"\",\n    \"apartamento_novo\": \"\",\n    \"cep\": \"\",\n    \"cep_novo\": \"\",\n    \"endereco\": \"\",\n    \"endereco_novo\": \"\",\n    \"numero\": \"\",\n    \"numero_novo\": \"\",\n    \"bairro\": \"\",\n    \"bairro_novo\": \"\",\n    \"cidade\": \"\",\n    \"cidade_novo\": \"\",\n    \"complemento\": \"\",\n    \"complemento_novo\": \"\",\n    \"referencia\": \"\",\n    \"referencia_novo\": \"\",\n    \"latitude\": \"\",\n    \"latitude_novo\": \"\",\n    \"longitude\": \"\",\n    \"longitude_novo\": \"\",\n    \"tipo_localidade\": \"U\",\n    \"avalista_1\": \"\",\n    \"avalista_2\": \"\",\n    \"testemunha_assinatura_digital\": \"\",\n    \"document_photo\": \"P\",\n    \"selfie_photo\": \"P\" \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://HOST/webservice/v1/cliente_contrato/Id_a_editar",
+					"protocol": "https",
+					"host": [
+						"HOST"
+					],
+					"path": [
+						"webservice",
+						"v1",
+						"cliente_contrato",
+						"Id_a_editar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar cliente_contrato",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true,
+					"accept": true,
+					"accept-encoding": true,
+					"user-agent": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "token após o \" : \"",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "id do usuario API",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "ixcsoft",
+						"value": "listar",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "qtype",
+							"value": "cliente_contrato.id",
+							"type": "text"
+						},
+						{
+							"key": "query",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "oper",
+							"value": ">",
+							"type": "text"
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rp",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "sortname",
+							"value": "cliente_contrato.id",
+							"type": "text"
+						},
+						{
+							"key": "sortorder",
+							"value": "asc",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://HOST/webservice/v1/cliente_contrato",
+					"protocol": "https",
+					"host": [
+						"HOST"
+					],
+					"path": [
+						"webservice",
+						"v1",
+						"cliente_contrato"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
+
+                    

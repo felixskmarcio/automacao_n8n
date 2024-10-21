@@ -1,0 +1,195 @@
+{
+  "name": "Apaga_a_Caixa_Padr_o",
+  "nodes": [
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "tableName": {
+          "__rl": true,
+          "value": "channel_api",
+          "mode": "list",
+          "cachedResultName": "channel_api"
+        },
+        "firesOn": "DELETE",
+        "additionalFields": {},
+        "options": {}
+      },
+      "id": "4885d6a3-31af-4ded-982b-626620aa3c2a",
+      "name": "Postgres Trigger",
+      "type": "n8n-nodes-base.postgresTrigger",
+      "typeVersion": 1,
+      "position": [
+        460,
+        460
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "qMOim8DlBc0Fyahj",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "75620144-49ea-46bc-aeff-e51134d2b053",
+              "name": "caixa",
+              "value": "={{ $('Postgres Trigger').item.json.payload.webhook_url.split('/').pop() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c0d57720-511b-40bf-af98-db46069b889f",
+      "name": "Pega o nome da Sessão",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        860,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "=DELETE",
+        "url": "={{ $('Info Base').item.json.urlapi }}/instance/logout/{{ $json.caixa }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Info Base').item.json.apikey }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4f92a901-0b55-44d3-852d-b14d1fad23b5",
+      "name": "Desconecta Estancia",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1060,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "=DELETE",
+        "url": "={{ $('Info Base').item.json.urlapi }}/instance/delete/{{ $('Pega o nome da Sessão').item.json.caixa }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Info Base').item.json.apikey }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d3c86b14-4d3a-4558-9ce5-da139a9ecb41",
+      "name": "Delta Estancia",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1260,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "98f9267a-8e6e-4dcb-8908-5c1570bcb0ec",
+              "name": "urlapi",
+              "value": "https://evolution.felixbr.org",
+              "type": "string"
+            },
+            {
+              "id": "66304908-724e-4a3f-a68f-4cb1aea2151b",
+              "name": "apikey",
+              "value": "bae6abadb008b1506f1ea33aa310c484",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8481293c-3dd3-4057-bd51-5e0619456ef4",
+      "name": "Info Base",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        660,
+        460
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Postgres Trigger": {
+      "main": [
+        [
+          {
+            "node": "Info Base",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pega o nome da Sessão": {
+      "main": [
+        [
+          {
+            "node": "Desconecta Estancia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Desconecta Estancia": {
+      "main": [
+        [
+          {
+            "node": "Delta Estancia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Info Base": {
+      "main": [
+        [
+          {
+            "node": "Pega o nome da Sessão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b78e6407-63a9-4afd-bdd7-efacf0e21ac5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "SL65bUbw3cc4roZL",
+  "tags": []
+}

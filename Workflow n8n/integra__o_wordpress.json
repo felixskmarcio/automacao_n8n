@@ -1,0 +1,351 @@
+{
+  "name": "integração wordpress",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info Base1').item.json[\"urlchatwoot\"] }}/api/v1/accounts/{{ $('Info Base1').item.json[\"idconta\"] }}/contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Info Base1').item.json[\"token\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"inbox_id\": {{ $('Info Base1').item.json[\"idcaixa\"] }},\n\"name\": \"{{ $('Info Base1').item.json[\"NomeContato\"] }}\",\n\"phone_number\": \"{{ $('Info Base1').item.json[\"numerodeenvio\"] }}\"\n}",
+        "options": {}
+      },
+      "id": "e9daef24-a098-49d1-9478-d90cd7ccf2f2",
+      "name": "Add contato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        -180,
+        320
+      ],
+      "alwaysOutputData": true,
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info Base1').item.json[\"urlchatwoot\"] }}/api/v1/accounts/{{ $('Info Base1').item.json[\"idconta\"] }}/conversations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Info Base1').item.json[\"token\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"inbox_id\": \"{{ $('Info Base1').item.json[\"idcaixa\"] }}\",\n\"contact_id\": \"{{ $('Add contato').item.json[\"payload\"][\"contact\"][\"id\"] }}\",\n\"status\": \"open\"\n}",
+        "options": {}
+      },
+      "id": "4ff7fc5b-35aa-44ba-b650-8bcecb77722a",
+      "name": "Abre conversa",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        340,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info Base1').item.json[\"urlchatwoot\"] }}/api/v1/accounts/{{ $('Info Base1').item.json[\"idconta\"] }}/conversations/{{ $('Abre conversa').item.json[\"id\"] }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Info Base1').item.json[\"token\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"content\": \"{{ $('Info Base1').item.json[\"MensagemEnvio\"] }}\",\n\"message_type\": \"outgoing\"\n}",
+        "options": {}
+      },
+      "id": "a32e8a04-24db-45b0-906b-cb65ac9a15f2",
+      "name": "Envia Mensagem",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        560,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.error.message }}",
+              "operation": "notEqual",
+              "value2": "422 - \"{\\\"message\\\":\\\"Phone number has already been taken\\\",\\\"attributes\\\":[\\\"phone_number\\\"]}\""
+            }
+          ]
+        }
+      },
+      "id": "ee116fba-2de7-4b55-8feb-75eb76b1b2d2",
+      "name": "Existe o Contato?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        60,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Info Base1').item.json[\"urlchatwoot\"] }}/api/v1/accounts/{{ $('Info Base1').item.json[\"idconta\"] }}/contacts/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $('Info Base1').item.json[\"numerodeenvio\"] }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Info Base1').item.json[\"token\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3c6387e3-ad74-4bb2-937b-5644a8758e8c",
+      "name": "Busca Contato Existe",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        340,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info Base1').item.json[\"urlchatwoot\"] }}/api/v1/accounts/{{ $('Info Base1').item.json[\"idconta\"] }}/conversations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Info Base1').item.json[\"token\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"inbox_id\": \"{{ $('Info Base1').item.json[\"idcaixa\"] }}\",\n\"contact_id\": \"{{ $('Busca Contato Existe').item.json[\"payload\"][0][\"id\"] }}\",\n\"status\": \"open\"\n}",
+        "options": {}
+      },
+      "id": "6715df89-37c6-49ad-bd89-c7f6478856c1",
+      "name": "Abre conversa de contato existente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        560,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info Base1').item.json[\"urlchatwoot\"] }}/api/v1/accounts/{{ $('Info Base1').item.json[\"idconta\"] }}/conversations/{{ $('Abre conversa de contato existente').item.json[\"id\"] }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Info Base1').item.json[\"token\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"content\": \"{{ $('Info Base1').item.json[\"MensagemEnvio\"] }}\",\n\"message_type\": \"outgoing\"\n}",
+        "options": {}
+      },
+      "id": "058f625a-8742-4b27-bfd0-44c8fe142dab",
+      "name": "Envia Mensagem para contato existente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        760,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "token",
+              "value": "token do seu chatwoot"
+            },
+            {
+              "name": "urlchatwoot",
+              "value": "url do seu chatwoot"
+            },
+            {
+              "name": "idconta",
+              "value": "id da conta ou da empresa"
+            },
+            {
+              "name": "idcaixa",
+              "value": "id da caixa que deseja usar para enviar"
+            },
+            {
+              "name": "numerodeenvio",
+              "value": "=+55{{ $('Webhook').item.json[\"body\"][\"billing\"][\"phone\"].replace(/[^0-9]/g, '') }}"
+            },
+            {
+              "name": "NomeContato",
+              "value": "Raphael Teste"
+            },
+            {
+              "name": "MensagemEnvio",
+              "value": "Olá, seja bem vindo a astra online, obrigado pela sua compra."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6cbcbdd4-05d7-44b7-ae74-23d16a86a607",
+      "name": "Info Base1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -420,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "woocommerce",
+        "options": {}
+      },
+      "id": "8fc0d0a2-68eb-4bac-84e7-166d28f12aed",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        320
+      ],
+      "webhookId": "00730648-ea69-4b80-88d9-cc5f3fbf9e6c"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Add contato": {
+      "main": [
+        [
+          {
+            "node": "Existe o Contato?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Abre conversa": {
+      "main": [
+        [
+          {
+            "node": "Envia Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Existe o Contato?": {
+      "main": [
+        [
+          {
+            "node": "Abre conversa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Busca Contato Existe",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Contato Existe": {
+      "main": [
+        [
+          {
+            "node": "Abre conversa de contato existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Abre conversa de contato existente": {
+      "main": [
+        [
+          {
+            "node": "Envia Mensagem para contato existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Info Base1": {
+      "main": [
+        [
+          {
+            "node": "Add contato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Info Base1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "32f03dfe-0e61-4a19-89cb-150e3f44c980",
+  "id": "7n86DSnwrmhJMJ4f",
+  "meta": {
+    "instanceId": "3046bcc65eead750d01bb28d1e573f7173e700c07c673bf620499c14696ba544"
+  },
+  "tags": []
+}

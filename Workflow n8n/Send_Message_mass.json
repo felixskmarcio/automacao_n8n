@@ -1,0 +1,603 @@
+{
+  "name": "Send_Message",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "99c1a420-fa81-438d-8b7f-8ed3e14fabef",
+      "name": "When clicking \"Test workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "24c9cfd7-b99c-4e4b-a970-e7ff3c16bd81",
+              "leftValue": "={{ $json.numberExists }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "5268d2d2-74ec-4335-9b48-6e31a26b7783",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        440
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "78584828-cf38-4c32-b1a6-70aed4732b69",
+      "name": "Loop Over Items1",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        620,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('All Data API').item.json.api_url }}/chat/fetchProfile/{{ $('All Data API').item.json.api_instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('All Data API').item.json.api_key }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"55{{ $json.tel }}\"\n} ",
+        "options": {}
+      },
+      "id": "0b74aa5e-6f94-43d8-84cb-53ac52c48556",
+      "name": "Check Profile",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        820,
+        460
+      ],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2f32f35f-e985-47e0-be28-f6959d9844a9",
+              "name": "api_url",
+              "value": "https://api.acos-services.tech",
+              "type": "string"
+            },
+            {
+              "id": "4291ce09-2085-4137-b13e-37949e349c36",
+              "name": "api_instance",
+              "value": "api_aurelio",
+              "type": "string"
+            },
+            {
+              "id": "4331c9c5-4713-4c11-8c08-c703e2c63332",
+              "name": "api_key",
+              "value": "9e119nbde3ixc5ndnqtgt",
+              "type": "string"
+            },
+            {
+              "id": "3f08df0b-6c7d-4e6d-8401-0a27ea6100a0",
+              "name": "message",
+              "value": "Message send API WhatsApp for ",
+              "type": "string"
+            },
+            {
+              "id": "754fa844-9c6a-4a86-a7ea-057f67fbdd10",
+              "name": "delay",
+              "value": 5,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bd0cc449-15ed-40ce-9dc3-35894993efbf",
+      "name": "All Data API",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        60,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('All Data API').item.json.api_url }}/message/sendText/{{ $('All Data API').item.json.api_instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('All Data API').item.json.api_key }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"number\": \"{{ $json[\"wuid\"] }}\",\n    \"options\": {\n        \"delay\": 1200,\n        \"presence\": \"composing\",\n        \"linkPreview\": false\n    },\n    \"textMessage\": {\n        \"text\": \"{{ $('All Data API').item.json.message }} {{ $json.name }}\"\n    }\n}  ",
+        "options": {}
+      },
+      "id": "4918cf30-dd5a-46f6-a8a8-093ed42ed7c0",
+      "name": "Send Mensage",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1280,
+        380
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 9,
+        "tableId": 30,
+        "rowId": "={{ $('Loop Over Items1').item.json.id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 146,
+              "fieldValue": "=true"
+            }
+          ]
+        }
+      },
+      "id": "25b98363-f121-4cb7-90a5-0775e9a98c3a",
+      "name": "Changed Status for True",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        440
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "QaYoZohDurQoL6rN",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "databaseId": 4,
+        "tableId": 21,
+        "rowId": "={{ $('Loop Over Items1').item.json.id }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 97,
+              "fieldValue": "={{ $json.numberExists }}"
+            }
+          ]
+        }
+      },
+      "id": "c29ab2b8-3e47-41fe-8c4b-794636f7c071",
+      "name": "Changed Status for False",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        540
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "QaYoZohDurQoL6rN",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "0c5f5f0f-7d04-439a-8b31-6e7ff7fd7345",
+              "leftValue": "={{ $json.active }}",
+              "rightValue": "\"true\"",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "89e11783-3d31-424e-80ba-d7bfb0f42e2a",
+      "name": "User Check Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        880,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "databaseId": 9,
+        "tableId": 30,
+        "returnAll": true,
+        "additionalOptions": {}
+      },
+      "id": "c4085110-ce07-4d0c-b63c-e95e4ace36c8",
+      "name": "Get All User",
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        160,
+        520
+      ],
+      "credentials": {
+        "baserowApi": {
+          "id": "QaYoZohDurQoL6rN",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "={{ $('All Data API').item.json.delay }}"
+      },
+      "id": "1109c8e9-71fb-460f-b35a-3808389ffd0e",
+      "name": "Delay Send Message",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        440
+      ],
+      "webhookId": "b10f2338-86d1-4a16-b45c-14513cad6551"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "14xpQbkHSLhvYIXGHeKqrox5vkBjujQMpoY2MSvzGLJk",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14xpQbkHSLhvYIXGHeKqrox5vkBjujQMpoY2MSvzGLJk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14xpQbkHSLhvYIXGHeKqrox5vkBjujQMpoY2MSvzGLJk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Loop Over Items1').item.json.row_number }}",
+            "active": "true",
+            "tel": "={{ $('Loop Over Items1').item.json.tel }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "tel",
+              "displayName": "tel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "active",
+              "displayName": "active",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f8c3cc58-869d-415b-be86-1912bc317c61",
+      "name": "Google Sheets1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        1500,
+        160
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YPsifXWGNjWIe8UV",
+          "name": "Google App Authx "
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "14xpQbkHSLhvYIXGHeKqrox5vkBjujQMpoY2MSvzGLJk",
+          "mode": "list",
+          "cachedResultName": "Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14xpQbkHSLhvYIXGHeKqrox5vkBjujQMpoY2MSvzGLJk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Página1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14xpQbkHSLhvYIXGHeKqrox5vkBjujQMpoY2MSvzGLJk/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "ed0bae3e-bc86-4803-bfbc-5c582344c641",
+      "name": "Get list user sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [
+        320,
+        20
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YPsifXWGNjWIe8UV",
+          "name": "Google App Authx "
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking \"Test workflow\"": {
+      "main": [
+        [
+          {
+            "node": "All Data API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send Mensage",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Changed Status for False",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "User Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Profile": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All Data API": {
+      "main": [
+        [
+          {
+            "node": "Get list user sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Mensage": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Changed Status for False": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "User Check Status": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Delay Send Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delay Send Message": {
+      "main": [
+        [
+          {
+            "node": "Check Profile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Changed Status for True": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All User": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get list user sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "aa50f32d-a82d-4bb6-b6f5-395fb2bdc654",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "765da129154c2792322efdcc8238b68d821bab02d793b42010bac59b978c5d07"
+  },
+  "id": "fON3z9mzZNw91eMS",
+  "tags": []
+}

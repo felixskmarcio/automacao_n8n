@@ -1,0 +1,66 @@
+
+Liberando portas do Postgree
+
+
+/etc/postgresql/12/main/pg_hba.conf
+Linha 97
+
+host all all 127.0.0.1/32 scram-sha-256
+
+Alterar para
+host all all 0.0.0.0/0 md5
+
+
+/etc/postgresql/12/main/postgresql.conf
+
+Linha 60
+#listen_addresses = 'localhost' # what IP address(es) to listen on;
+
+Alterar para
+listen_addresses = '*' # what IP address(es) to listen on;
+
+sudo systemctl restart postgresql
+
+
+
+https://github.com/dispzapdev/apicodechat
+
+
+Login n8n:
+
+
+Ip do servidor
+
+#Database
+chatwoot_production
+
+#user
+chatwoot
+
+#Password
+Adicone a senha do Postgres. Você encontra no arquivo
+.env do chatwoot em /home/chatwoot/chatwoot/.env
+
+
+Workflow n8n
+
+
+Vá até o NODE SetMensagem
+
+#Vá até o campo value e procure pela variavél #suaurlchatwoot e adicione o endereço de instalação do seu chatwoot
+
+
+PASSO 03: Ajuste envio no NODE SendMSGCodechat
+
+#Na URL onde ta escrito #urlcodechat adicione o endereço da api codechat. Em #suainstancia é o nome de sua caixa de entrada
+
+Dentro do Chatwoot
+
+Acessar Configurações, depois em Caixa de Entrada abra as configrações, encontre a opção Habilitar CSAT e deixe como ativado. 
+
+Acessar as automações e crie uma nova automação com o evento Conversation Updated e deixe o status como resolvida. Em ações escolha Send Webhook Event e adicione o webhook do workflow baixado.
+
+
+
+
+

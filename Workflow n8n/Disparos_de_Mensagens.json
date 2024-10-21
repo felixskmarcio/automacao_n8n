@@ -1,0 +1,279 @@
+{
+  "name": "Disparos de Mensagens",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "enviar-mensagem",
+        "options": {}
+      },
+      "id": "3f5a1a5b-bc71-40d3-9054-adaee3c24b03",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        800,
+        260
+      ],
+      "webhookId": "585d3ae5-74e1-4c0e-9085-7d6eb9ac290a"
+    },
+    {
+      "parameters": {},
+      "id": "aeb28891-7264-45df-b41f-1f51ebccd9d3",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        600,
+        260
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1nnC5x79zS0ksIUq9dChd-z1fChweIhft4PcQXnNdh9g",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 903203341,
+          "mode": "list",
+          "cachedResultName": "NUMEROS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nnC5x79zS0ksIUq9dChd-z1fChweIhft4PcQXnNdh9g/edit#gid=903203341"
+        },
+        "options": {}
+      },
+      "id": "51818d86-5145-4647-91c6-f69b88226954",
+      "name": "NUMEROS",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        1360,
+        260
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yI9Xwt4GMIPqI0Ii",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 35
+      },
+      "id": "c3d51ab3-76df-4b9f-9de2-ced60ba97800",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1880,
+        260
+      ],
+      "webhookId": "336cf760-fced-4be3-aec6-bb0f0877e721"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "ce25b9ed-7cb2-4a0b-be2c-6f1f54060f77",
+      "name": "NUMERO",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1560,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1nnC5x79zS0ksIUq9dChd-z1fChweIhft4PcQXnNdh9g",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "MENSAGEIRO",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nnC5x79zS0ksIUq9dChd-z1fChweIhft4PcQXnNdh9g/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRangeA1",
+              "range": "A:C"
+            }
+          }
+        }
+      },
+      "id": "63c1e05a-82f0-4049-91a8-88fca3ec7e43",
+      "name": "MENSAGEM",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        1020,
+        260
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yI9Xwt4GMIPqI0Ii",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1nnC5x79zS0ksIUq9dChd-z1fChweIhft4PcQXnNdh9g",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "MENSAGEIRO",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nnC5x79zS0ksIUq9dChd-z1fChweIhft4PcQXnNdh9g/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "MENSAGEM": "={{ $('MENSAGEM').item.json[\"MENSAGEM\"] }}\n\n",
+            "STATUS GERAL": "ENVIANDO MENSAGEM"
+          },
+          "matchingColumns": [
+            "MENSAGEM"
+          ],
+          "schema": [
+            {
+              "id": "MENSAGEM",
+              "displayName": "MENSAGEM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "STATUS GERAL",
+              "displayName": "STATUS GERAL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4ae2f7a6-fbb6-477c-9cff-60db7aad3df0",
+      "name": "STATUS GERAL",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        1200,
+        260
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yI9Xwt4GMIPqI0Ii",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "name": "First item",
+          "code": 1
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "MENSAGEM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "NUMERO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NUMEROS": {
+      "main": [
+        [
+          {
+            "node": "NUMERO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MENSAGEM": {
+      "main": [
+        [
+          {
+            "node": "STATUS GERAL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "STATUS GERAL": {
+      "main": [
+        [
+          {
+            "node": "NUMEROS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f4b942fc-a25e-4fa9-82cc-c5ecffe1694e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "84730831191790985baed53fc7a01cadfe1ce240ecb11af4a4a4a0d7a204c0b8"
+  },
+  "id": "a4bnQRPLmGusM7RE",
+  "tags": []
+}

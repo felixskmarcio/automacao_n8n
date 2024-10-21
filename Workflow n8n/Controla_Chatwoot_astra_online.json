@@ -1,0 +1,217 @@
+{
+  "name": "Controla Chatwoot",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "order",
+        "operation": "getAll",
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "040a4f35-ee02-4025-8150-8413e6433d79",
+      "name": "WooCommerce",
+      "type": "n8n-nodes-base.wooCommerce",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        760
+      ],
+      "credentials": {
+        "wooCommerceApi": {
+          "id": "bl10dwChgHVfeYsy",
+          "name": "WooCommerce account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "=processing",
+              "value2": "={{ $json.status }}"
+            }
+          ]
+        }
+      },
+      "id": "05ba8fc5-96a0-4d9f-a9d0-f8173e84acdf",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        380,
+        760
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $('Info Base1').item.json[\"UrlChatwoot\"] }}/platform/api/v1/accounts/{{ $('Info Base1').item.json.id_user }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Info Base1').item.json[\"api_access_token\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{ \"status\": \"suspended\" }",
+        "options": {}
+      },
+      "id": "75c3ad19-3d57-46d8-b708-3628acc47fdc",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        660,
+        920
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $('Info Base1').item.json[\"UrlChatwoot\"] }}/platform/api/v1/accounts/{{ $('Info Base1').item.json.id_user }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "={{ $('Info Base1').item.json[\"api_access_token\"] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{ \"status\": \"active\" }",
+        "options": {}
+      },
+      "id": "989c57fc-992d-45ea-b6aa-9e0e36729f06",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        660,
+        620
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "id": "77039fd3-0c4c-461a-9888-b4a680098eb7",
+      "name": "Verifica em 5m",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [
+        -360,
+        760
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "api_access_token",
+              "value": "seu token de app"
+            },
+            {
+              "name": "UrlChatwoot",
+              "value": "url do seu chatwoot"
+            },
+            {
+              "name": "token_user",
+              "value": "={{ $('WooCommerce').item.json[\"meta_data\"][14][\"value\"] }}"
+            },
+            {
+              "name": "id_user",
+              "value": "={{ $('WooCommerce').item.json[\"meta_data\"][15][\"value\"] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4a100f30-e4bc-454f-bfea-ec7a95b18241",
+      "name": "Info Base1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        120,
+        760
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "WooCommerce": {
+      "main": [
+        [
+          {
+            "node": "Info Base1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica em 5m": {
+      "main": [
+        [
+          {
+            "node": "WooCommerce",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Info Base1": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "5fa98f07-1400-4549-b65c-3ab7f51f2b87",
+  "id": "6xvCbq14aIbgCEtN",
+  "meta": {
+    "instanceId": "d5bfd460186958f24440717ba8c6850c58d708408bc9e1009702579e3a2563e6"
+  },
+  "tags": []
+}

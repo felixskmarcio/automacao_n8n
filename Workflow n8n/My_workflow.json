@@ -1,0 +1,22 @@
+{
+  "parameters": {
+    "operation": "append",
+    "sheetId": "seu_google_sheet_id_aqui",
+    "range": "Sheet1!A:C",
+    "dataMode": "defineBelow",
+    "data": [
+      {
+        "name": "title",
+        "value": "={{ $item(0).title }}"
+      },
+      {
+        "name": "link",
+        "value": "={{ $item(0).link }}"
+      },
+      {
+        "name": "excerpt",
+        "value": "={{ $item(0).excerpt }}"
+      }
+    ]
+  }
+}

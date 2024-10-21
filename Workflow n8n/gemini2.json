@@ -1,0 +1,247 @@
+{
+  "name": "gemin2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "502c85e3-3938-43d6-bd81-6e02715df448",
+        "options": {}
+      },
+      "id": "a8408e2b-17fc-49a6-96e7-d93c0e2b302b",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1140,
+        600
+      ],
+      "webhookId": "8abe26f5-f527-42a6-9010-b5e30ca3c7ed"
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "mensagem",
+              "stringValue": "={{ $('Webhook').item.json.body.data.message.extendedTextMessage.text }}{{ $('Webhook').item.json.body.data.message.conversation }}"
+            }
+          ]
+        },
+        "include": "none",
+        "options": {}
+      },
+      "id": "778a33b4-26a6-4e18-a066-60a098851a01",
+      "name": "mensagem",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.2,
+      "position": [
+        -460,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "chatwoot_url"
+            },
+            {
+              "name": "evolution_url"
+            },
+            {
+              "name": "global_api_key"
+            },
+            {
+              "name": "instance_name",
+              "value": "={{ $('Webhook').item.json[\"body\"][\"instance\"] }}"
+            },
+            {
+              "name": "chatwoot_token",
+              "value": "="
+            },
+            {
+              "name": "APIKEY_GEMINI"
+            }
+          ],
+          "number": [
+            {
+              "name": "chatwoot_account_id",
+              "value": "="
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "603a2898-a5b3-4bcc-ade8-b116c3d0f45b",
+      "name": "Info_Base",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -680,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cc003248-da55-49aa-afcb-b037ee7c1db9",
+              "leftValue": "={{ $json.body.data.key.fromMe }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ddebb234-11c1-42e5-8c49-b8f403641ff8",
+      "name": "Filter",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        -920,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyDvgWRkfX89i4G_eDBqaFCMqlSgGyPs3Oo",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"{{ $json.mensagem }}\"\n        }\n      ]\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "0f674ada-59b5-452a-8e95-028d0d6db516",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        -260,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Info_Base').item.json.evolution_url }}/message/sendText/{{ $('Webhook').item.json.body.instance }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "apikey",
+              "value": "={{ $('Info_Base').item.json.global_api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"number\":\"{{ $('Webhook').item.json.body.data.key.remoteJid }}\",\"options\":{\"delay\":5000,\"presence\":\"composing\"},\"textMessage\":{\"text\":\"{{ $json.candidates[0].content.parts[0].text.replace(/\\n/g, \"\\\\n\").replace(/\"/g, '*').replace(/'/g, '*') }}\"}} ",
+        "options": {}
+      },
+      "id": "d16a18ed-3c77-43f8-9e58-882825009caf",
+      "name": "sendText",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -40,
+        600
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Info_Base": {
+      "main": [
+        [
+          {
+            "node": "mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Info_Base",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "mensagem": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "sendText",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d7cd901f-c650-4c76-9a0c-4d612768680c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "FtTVWbyOlZjLdCs6",
+  "tags": []
+}

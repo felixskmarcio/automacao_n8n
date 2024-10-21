@@ -1,0 +1,332 @@
+{
+  "name": "Google Calendário",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "f03e9138-386a-4f9e-ba2f-dca91c5914ae",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -20,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.timestamp }}",
+        "options": {
+          "includeInputFields": false
+        }
+      },
+      "id": "bb73e8d0-61e8-4f55-95b7-e4aed41a3d43",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        240,
+        260
+      ],
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "felixskmarcio2@gmail.com",
+          "mode": "list",
+          "cachedResultName": "felixskmarcio2@gmail.com"
+        },
+        "limit": 7,
+        "options": {
+          "timeMin": ""
+        }
+      },
+      "id": "a88a8e95-eeff-44b2-85ce-140136906bde",
+      "name": "Google Calendar",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        800,
+        300
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "retryOnFail": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "j7gY2PJndyUd5A8G",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{ $('Schedule Trigger').item.json.timestamp }}",
+        "duration": 7,
+        "options": {}
+      },
+      "id": "d830e92b-0b3e-41af-80b3-8b6342abc8cb",
+      "name": "Após 7 dias",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        420,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{ $('Schedule Trigger').item.json.timestamp }}",
+        "duration": 7,
+        "options": {}
+      },
+      "id": "f5f50eba-c2be-4424-9d7c-c4cdb8d7a0fe",
+      "name": "7 dias atras",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        580,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "fb2177c8-3cbd-452c-a6a4-8a1fb2349a41",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "=",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "9af03a92-5746-4eb3-9791-e738b1ab5419",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        300
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "summary"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "7c677e4b-bad8-4c42-a419-ca4f622be858",
+      "name": "Aggregate",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://evolutionapi.felixbr.org/message/sendText/Marcio",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "gpxo2ktl9hpgo2mt313f"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "+558298274851"
+            },
+            {
+              "name": "delay",
+              "value": "4000"
+            },
+            {
+              "name": "textMessage.text",
+              "value": "=Google Calendário:\n-  {{ $json.summary }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b8d171ed-e3eb-432a-8e0f-599037920545",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1300,
+        -120
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "retryOnFail": true,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "timestamp"
+            }
+          ]
+        },
+        "options": {
+          "disableDotNotation": false
+        }
+      },
+      "id": "3cb8b913-a6c1-415c-8325-34590589be2b",
+      "name": "Sort",
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        100,
+        120
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Após 7 dias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Após 7 dias": {
+      "main": [
+        [
+          {
+            "node": "7 dias atras",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "7 dias atras": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "92a8b6a9-bbc0-47b4-9af7-37de412b4907",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "84730831191790985baed53fc7a01cadfe1ce240ecb11af4a4a4a0d7a204c0b8"
+  },
+  "id": "aqzGxIoWPoTDkFD8",
+  "tags": []
+}

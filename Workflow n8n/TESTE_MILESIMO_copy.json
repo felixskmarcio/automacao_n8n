@@ -1,0 +1,346 @@
+{
+  "name": "TESTE MILESIMO copy",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "715a3dff-68e0-4716-8062-6d5d7ebf0487",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        340,
+        220
+      ],
+      "typeVersion": 1,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.sistema.prestek.com.br/webservice/v1/cliente_contrato",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "ixcsoft",
+              "value": "listar"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "qtype",
+              "value": "status_internet"
+            },
+            {
+              "name": "query",
+              "value": "CA"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "682754e3-0564-425f-bc18-a54c540726d7",
+      "name": "Contrato",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        100
+      ],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "TaC01Qo6a6KolQ5k",
+          "name": "Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.sistema.prestek.com.br/webservice/v1/cliente",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Basic MzI2OmExZWEzZDhlOTdiMDlmMTUzZTAyNzYzY2M5YjJlYmRmYThlYWVjMWMwNzBiNjczOGM3ZDhiN2NlYjU2NzIwMTY="
+            },
+            {
+              "name": "ixcsoft",
+              "value": "listar"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "ativo",
+              "value": "S"
+            },
+            {
+              "name": "razao"
+            },
+            {
+              "name": "fone"
+            },
+            {
+              "name": "qtype",
+              "value": "status_internet"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0442c944-ab54-48a4-8304-4ce9b27b12d2",
+      "name": "Cliente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        680,
+        340
+      ],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "TaC01Qo6a6KolQ5k",
+          "name": "Teste"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "daysInterval": 7,
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "0b3515ee-6914-43e2-8b3b-cd4bf3f311f8",
+      "name": "Cliente Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        40,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let currentPage = 1;\nlet totalPages = 1;\nconst limit = 12; // Defina o limite por página, conforme a API\nlet allData = [];\n\n// Loop enquanto houver mais páginas\nwhile (currentPage <= totalPages) {\n    // Recebe os dados como uma string JSON do nó anterior\n    const jsonString = items[0].json.data;\n    \n    // Converte a string JSON em um objeto JavaScript\n    const data = JSON.parse(jsonString);\n    \n    console.log(`Processando página: ${currentPage}`);\n    \n    // Adiciona os registros filtrados com status_internet igual a 'CA'\n    const filteredData = data.registros.filter(registro => registro.status_internet === 'CA');\n    allData.push(...filteredData);\n\n    // Calcular total de páginas com base no 'total' e 'limit'\n    totalPages = Math.ceil(data.total / limit);\n    currentPage++; // Avança para a próxima página\n}\n\n// Processar todos os registros filtrados e extrair os campos desejados\nconst extractedData = allData.map(registro => ({\n    id: registro.id || '',\n    id_cliente: registro.id_cliente || '',\n    status_internet: registro.status_internet || ''\n}));\n\n// Verificar o número de registros processados\nconsole.log(`Total de registros processados: ${extractedData.length}`);\n\n// Retornar os dados extraídos no formato esperado pelo n8n\nreturn extractedData.map(record => ({ json: record }));\n"
+      },
+      "id": "37b6b575-7e24-4f29-9e3a-20334bdca3e6",
+      "name": "codigo_contrato",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        100
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "let currentPage = 1;\nlet totalPages = 1;\nconst limit = 12; // Defina o limite por página, conforme a API\nlet allData = [];\n\n// Loop enquanto houver mais páginas\nwhile (currentPage <= totalPages) {\n    // Simula a API retornando os dados para uma página específica\n    const json_string = $input.item.json.data;  // Pegue o dado da API como string\n    const data = JSON.parse(json_string);  // Converta em objeto JavaScript\n\n    console.log(`Processando página: ${currentPage}`);\n    console.log(`Total de registros nesta página: ${data.registros.length}`);\n    \n    // Adicione os registros da página atual à lista total\n    allData.push(...data.registros);\n\n    // Calcular total de páginas com base no 'total' e 'limit'\n    totalPages = Math.ceil(data.total / limit);\n    currentPage++; // Avança para a próxima página\n}\n\n// Processar todos os registros extraídos\nconst extracted_data = allData.map(registro => ({\n    id: registro.id || '',\n    ativo: registro.ativo || '',\n    razao: registro.razao || '',\n    fone: registro.fone || '',\n    contrato_id: registro.id_conta || ''\n}));\n\n// Verificar o número de registros processados\nconsole.log(`Total de registros processados: ${extracted_data.length}`);\n\n// Retornar os registros no formato esperado pelo n8n\nreturn extracted_data.map(record => ({ json: record }));\n"
+      },
+      "id": "1672ab61-b3cd-4535-9c2c-965468505e93",
+      "name": "codigo_cliente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        340
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const resultado = $input.all().map(item => {\n    return {\n        json: {\n            razao: item.json.razao || \"Razão não encontrada\",\n            fone: item.json.fone || \"Telefone não encontrado\"\n        }\n    };\n});\n\nreturn resultado;\n"
+      },
+      "id": "79cfe071-7bb4-4bb6-a02a-0e1d4074cc1b",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1720,
+        -120
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "let razaoCount = 0;\nlet foneCount = 0;\n\nconst resultado = $input.all().map(item => {\n    // Incrementa os contadores se os valores não forem \"não encontrados\"\n    if (item.json.razao) {\n        razaoCount++;\n    }\n    if (item.json.fone) {\n        foneCount++;\n    }\n\n    return {\n        json: {\n            razao: item.json.razao || \"Razão não encontrada\",\n            fone: item.json.fone || \"Telefone não encontrado\"\n        }\n    };\n});\n\n// Adiciona a contagem ao resultado final\nresultado.push({\n    json: {\n        total_razao: razaoCount,\n        total_fone: foneCount\n    }\n});\n\nreturn resultado;\n"
+      },
+      "id": "c75d857b-662e-41d1-9550-07d83c904793",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        -100
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "88544cd9-caab-4dd8-86cb-ec86e3105201",
+              "name": "razao",
+              "value": "={{ $json.razao }}",
+              "type": "string"
+            },
+            {
+              "id": "47037016-e7b9-4fdb-99f6-a95749755f14",
+              "name": "fone",
+              "value": "={{ $json.fone }}",
+              "type": "string"
+            },
+            {
+              "id": "dac98a06-2a4e-4b35-a32b-f94486025286",
+              "name": "status",
+              "value": "={{ $json.status_internet }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f020582e-1c11-4da8-b45c-d1c42598a2a3",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1700,
+        300
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "id": "b2ce8abb-6d9b-4f13-ae1b-bb37b946e8bc",
+      "name": "Unificação",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1660,
+        660
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "retryOnFail": false,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "jsCode": "let currentPage = 1;\nlet totalPages = 1;\nconst limit = 12;  // Defina o limite por página, conforme a API\nlet allData = [];\n\n// Loop enquanto houver mais páginas\nwhile (currentPage <= totalPages) {\n    const json_string = $input.item.json.data;\n\n    if (json_string) {\n        try {\n            const data = JSON.parse(json_string);\n\n            console.log(`Processando página: ${currentPage}`);\n            console.log(data);  // Verifique se os dados estão corretos\n\n            if (data.registros && data.registros.length > 0) {\n                // Log para ver os primeiros registros\n                console.log(\"Registros encontrados:\", data.registros);\n\n                // Filtra os registros onde 'ativo' é 'S' e 'status_internet' é 'CA'\n                const filteredData = data.registros.filter(registro => registro.ativo === 'S' && registro.status_internet === 'CA');\n\n                console.log(`Total de registros filtrados: ${filteredData.length}`);\n                allData.push(...filteredData);\n            } else {\n                console.log(\"Nenhum registro encontrado nesta página.\");\n            }\n\n            // Calcular total de páginas com base no 'total' e 'limit'\n            totalPages = Math.ceil(data.total / limit);\n            currentPage++;  // Avança para a próxima página\n\n        } catch (error) {\n            console.error(`Erro ao processar JSON: ${error.message}`);\n            break;\n        }\n    } else {\n        console.error(\"json_string está indefinido.\");\n        break;\n    }\n}\n\n// Processar todos os registros extraídos\nconst extracted_data = allData.map(registro => ({\n    razao: registro.razao || '',\n    fone: registro.fone || ''\n}));\n\nconsole.log(`Total de registros processados: ${extracted_data.length}`);\nconsole.log(\"Dados extraídos:\", extracted_data);  // Para verificar os resultados\n\n// Retornar os registros no formato esperado pelo n8n\nreturn extracted_data.map(record => ({ json: record }));\n"
+      },
+      "id": "b2e303a4-de51-4735-8aa9-7355cebd3322",
+      "name": "razao e fone",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1260,
+        220
+      ],
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Cliente",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Contrato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contrato": {
+      "main": [
+        [
+          {
+            "node": "codigo_contrato",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cliente": {
+      "main": [
+        [
+          {
+            "node": "codigo_cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "codigo_contrato": {
+      "main": [
+        [
+          {
+            "node": "razao e fone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "codigo_cliente": {
+      "main": [
+        [
+          {
+            "node": "razao e fone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a8dcbf33-32a0-4d72-a482-139f68cc15be",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "84730831191790985baed53fc7a01cadfe1ce240ecb11af4a4a4a0d7a204c0b8"
+  },
+  "id": "4gVjOzP98oBzyjhl",
+  "tags": []
+}
