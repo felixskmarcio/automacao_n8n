@@ -1,11 +1,11 @@
 # Planejamento do Projeto - Classificação Inteligente de E-mails com OpenAI
 
-felixBR  
+FelixBR  
 Rua E, 20  
 Penedo, AL, 57200-000  
 +55 (82) 9.9827-4851  
 
-## classificação inteligente de e-mails com OpenAI  
+## Classificação inteligente de e-mails com OpenAI  
 **19 de outubro de 2024**  
 
 ### Descrição do projeto
@@ -78,5 +78,5 @@ Este projeto visa automatizar o processo de classificação de e-mails recebidos
 
 ### Termo de entrega
 - **Projeto**: classificação inteligente de e-mails com openai
-- **Cliente**: felixBR
+- **Cliente**: FelixBR
 - **Data de entrega**: 19/10/2024
